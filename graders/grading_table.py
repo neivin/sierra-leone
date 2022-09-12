@@ -1,7 +1,6 @@
-from enum import Enum
-import os
-from graders.ags_grader import AgsGrade
-from graders.gia_grader import GiaGrade
+from graders.grading_system import GradingSystem
+from graders.grading_system import AgsGrade
+from graders.grading_system import GiaGrade
 
 # AGS Chart: https://www.diamondscreener.com/wp-content/uploads/reference/agsl_proportion_charts.pdf
 # GIA Chart: https://www.diamondscreener.com/wp-content/uploads/reference/booklet_cut_estimation_tables_lowres.pdf
@@ -14,11 +13,6 @@ CROWN_ANGLE_ARRAY = [i / 10 for i in range(215, 410, 5)]
 # AGS Pavilion angle range 38.6 - 43.2
 # GIA Pavilion angle range 38.8 - 43.0
 PAVILION_ANGLE_ARRAY = [i / 10 for i in range(386, 434, 1)]
-
-
-class GradingSystem(Enum):
-    GIA = "GIA"
-    AGS = "AGS"
 
 
 class GradingTable:
@@ -34,9 +28,7 @@ class GradingTable:
         else:
             raise ValueError
 
-    def init_ags_table_(self, relative_path):
-        script_dir = os.path.dirname(__file__)  # <-- absolute dir the script is in
-        abs_grading_table_path = os.path.join(script_dir, relative_path)
+    def init_ags_table_(self, abs_grading_table_path):
         with open(abs_grading_table_path, "r") as file:
             i = 0
             for line in file:
