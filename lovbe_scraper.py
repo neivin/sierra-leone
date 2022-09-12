@@ -7,7 +7,7 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 
 
-def main:
+def main():
     pass
 
 if __name__ == '__main__':
