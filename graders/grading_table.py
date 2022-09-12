@@ -13,7 +13,7 @@ CROWN_ANGLE_ARRAY = [i / 10 for i in range(215, 410, 5)]
 
 # AGS Pavilion angle range 38.6 - 43.2
 # GIA Pavilion angle range 38.8 - 43.0
-PAVILION_ANGLE_ARRAY = [i / 10 for i in range(386, 434, 2)]
+PAVILION_ANGLE_ARRAY = [i / 10 for i in range(386, 434, 1)]
 
 
 class GradingSystem(Enum):
@@ -25,7 +25,7 @@ class GradingTable:
     def __init__(self, grading_system, table_pct, grading_table_path):
         self.grading_system = grading_system
         self.table_pct = table_pct
-        self.grading_table_ = [[] for crown_angle in CROWN_ANGLE_ARRAY]
+        self.grading_table_ = []
 
         if self.grading_system == GradingSystem.AGS:
             self.init_ags_table_(grading_table_path)
@@ -40,8 +40,8 @@ class GradingTable:
         with open(abs_grading_table_path, "r") as file:
             i = 0
             for line in file:
-                crown_angle_grades = line.rstrip().split(" ")
-                self.grading_table_[i] = map(lambda x: AgsGrade(x), crown_angle_grades)
+                pavilion_angle_grades = line.rstrip().split(" ")
+                self.grading_table_.append(list(map(lambda x: AgsGrade(x), pavilion_angle_grades)))
                 i += 1
 
     def init_gia_table_(self):
@@ -51,7 +51,7 @@ class GradingTable:
         raise NotImplementedError
 
     def get_grade(self, crown_angle, pavilion_angle):
-        raise NotImplementedError
-# grading table config
-# for every crown angle -> [pavilion angles]
-# map of crown angle -> map (starting pavilion angle to grade)
+        crown_angle_index = CROWN_ANGLE_ARRAY.index(crown_angle)
+        pavilion_angle_index = PAVILION_ANGLE_ARRAY.index(pavilion_angle)
+
+        return self.grading_table_[pavilion_angle_index][crown_angle_index]
